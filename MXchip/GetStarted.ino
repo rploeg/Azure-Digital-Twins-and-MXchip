@@ -2,10 +2,6 @@
 // Licensed under the MIT license. 
 // To get started please visit https://microsoft.github.io/azure-iot-developer-kit/docs/projects/connect-iot-hub?utm_source=ArduinoExtension&utm_medium=ReleaseNote&utm_campaign=VSCode
 
-// testdevice rp
-//   ADT "DeviceConnectionString": "HostName=ih-e6e7eeb8-a103-4966-9af9-29dcf127ae33-1.azure-devices.net;DeviceId=bc9776b4-ca8d-4f3b-bb71-58129e695617;SharedAccessKey=org6YbEvbZtXCejCfj10JELDBtWBNe2S0hoGjeiBMjI=",
-// iothub HostName=iothubreceiver.azure-devices.net;DeviceId=particle01;SharedAccessKey=SFKTlhRs86hCoQEfkFd1dCD0YhpBDyRpMVWGCdKJ7OQ=
-
 #include "AZ3166WiFi.h"
 #include "AzureIotHub.h"
 #include "DevKitMQTTClient.h"
