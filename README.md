@@ -1,4 +1,4 @@
-# Azure Digital Twins with the Microsoft MXchip AZ3166
+# Connect the Microsoft MXchip AZ3166 with Azure Digital Twins
 
 ## Goal
 
