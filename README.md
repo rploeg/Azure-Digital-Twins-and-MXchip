@@ -129,7 +129,7 @@ To send messages to Azure Digital Twins you need to add the right message proper
 
 ## Result
 
-If we now start the MXchip every 5 seconds a a new message will be sended, it will send now the the right message format and the corresponding space will be updated with Azure Digital Twins. You can check that with [Postman](https://www.postman) via the following URL on Azure Digital Twins:
+If we now start the MXchip every 5 seconds a a new message will be sended, it will send now the the right message format and the corresponding space will be updated with Azure Digital Twins. You can check that with [Postman](https://www.postman.com) via the following URL on Azure Digital Twins:
 
 ```
 {{baseurl}}spaces/SPACEID?includes=values
