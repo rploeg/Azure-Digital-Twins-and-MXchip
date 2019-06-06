@@ -2,21 +2,21 @@
 
 ## Goal
 
-The goal of this project is to connect the [Microsoft MX chip](https://microsoft.github.io/azure-iot-developer-kit/) directly to the [Microsoft Azure Digital Twins](https://azure.microsoft.com/en-us/services/digital-twins/). The current solutions all use the IoT hub as entry point. In Azure Digital Twins the IoT Hub is also part of the solution, but there are extra message properties needed for accepting the messages from the MXchip. Because debugging of messages are hard currently in Azure Digital Twins, this project has created.
+The goal of this project is to connect the [Microsoft MX chip](https://microsoft.github.io/azure-iot-developer-kit/) directly to the [Microsoft Azure Digital Twins](https://azure.microsoft.com/en-us/services/digital-twins/). The current solutions all use the Azure IoT hub as first entry point. In Azure Digital Twins the Azure IoT Hub is also part of the solution, but there are extra message properties needed for accepting the messages from the MXchip into Azure Digital Twins. Because debugging of messages is hard currently in Azure Digital Twins, this project has created to help connecting the device to Azure Digital Twins.
 
 ![High Level Solution](https://github.com/rploeg/Azure-Digital-Twins-and-MXchip/blob/master/highlevelsolution.png)
 
-## Setup Azure Digital Twins
+## Setup of Microsoft Azure Digital Twins
 
-First you need to setup an Azure Digital Twins instance with a graph. The Microsoft team has created a perfect guideline how you need to create a graph like this. Please check [this](https://docs.microsoft.com/en-us/azure/digital-twins/tutorial-facilities-setup) link. 
+First you need to setup an Azure Digital Twins instance with a graph structure. The Microsoft ADT team has created a perfect guideline how you need to create a graph. Please check [this](https://docs.microsoft.com/en-us/azure/digital-twins/tutorial-facilities-setup) link to setup a simple structure. 
 
 There are some important things you don't need to forgot: 
 
-* Create a simple graph structure (tenant, building, floor, room(this is the space where the sensors are connected)
-* Create a minimal structure of one device with two sensors in the graph that are connected to a space
-* Create two matcher, one for temperature and one for humidity
-* Connected the UDF's to the right space
-* Give the right role assignment to the UDF's
+* Create a simple graph structure (tenant, building, floor, room (this is the space where the sensors are connected).
+* Create a minimal structure of one device with two sensors in the graph that are connected to a space.
+* Create two matcher, one for temperature and one for humidity.
+* Connected the UDF's to the right space.
+* Give the right role assignments to the UDF's.
 
 ### Matcher
 
@@ -58,11 +58,11 @@ First of all you need to create matchers for the two sensor types:
 }
 ```
 
-So when temperature or humidity data gets now in the Azure Digital Twins, you get them.
+So when temperature or humidity data gets in the Azure Digital Twins, the matcher, match the sensor data type and you can process it further with for example UDF's.
 
 ### UDF - set value on space
 
-When we get with the matcher the right sensors, we can create and UDF. UDF is a javascript based rule engine within Azure Digital Twins. In this example I only set a temperature value on a space (the room)
+When we get with the matcher the right sensor data types, we can create and UDF. UDF is a javascript based rule engine within Azure Digital Twins. In the example below I only set a temperature value on the connected space (in this example a room in a building)
 
 ```javascript
 function process(telemetry, executionContext) {
@@ -77,9 +77,9 @@ function process(telemetry, executionContext) {
 }
 ```
 
-### UDF - if humidity is above 50
+### UDF - if humidity is above 50 then...
 
-But we want to use also some rules in the javascript. For example when the humidity is higher then 50% the humidity space property need to be updated with that the humidity is too high in the room. We then can send a notification to the egress point of Azure Digital Twins, so we can create an action.
+But we want to use also some rules in the javascript. For example when the humidity is higher then 50% the humidity space property need to be updated with "the humidity is too high in the room". We then can send for example a notification to the egress point of Azure Digital Twins, so we can create an action in for example Microsoft Dynamics Field Services to create a ticket.
 
 ```javascript
 function process(telemetry, executionContext) {
@@ -109,7 +109,7 @@ function process(telemetry, executionContext) {
 }
 ```
 
-Don't forget to create the two role assignments on this UDF, else they won't be executed. 
+Don't forget to create the role assignments on the UDF's, else they won't be executed. 
 
 ## Configure MXChip
 
@@ -208,3 +208,10 @@ Then you will get the values of the corresponding space, the result should somet
 }
 ```
 
+## Debugging
+
+Debugging is still hard within Azure Digital Twins. The best way is to use a lot of logging with the UDF and send it to an Azure Service Bus Topic, so you can examine it later. The other thing you can do, is enable logging in the portal of Azure:
+
+![Logging](https://github.com/rploeg/Azure-Digital-Twins-and-MXchip/blob/master/loggingADT.png)
+
+In this example I store it to Azure Storage. I use these logging to see if the message (you can't see the message content) comees in and if an UDF is executed.
